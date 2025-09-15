@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Bundle & Save</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      --green: #0b7a4f;
+      --light: #f5f5f5;
+      --box-bg: #ffffff;
+      --box-border: #d7d7d7;
+    }
+    html,body{height:100%;}
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--light);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 420px;              
+      max-width: 95%;
+    }
+
+    .header-with-lines {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: green;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .header-with-lines::before,
+    .header-with-lines::after {
+      content: "";
+      width: 90px;              
+      height: 2px;
+      background:green;
+    }
+
+    .option {
+      background: var(--box-bg);
+      border: 2px solid var(--box-border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
+      position: relative;
+      transition: border-color .18s, box-shadow .18s, background .18s;
+      width: 100%;
+      box-sizing: border-box;
+      cursor: default; 
+    }
+
+    .option.active {
+      border-color: var(--green);
+      background: #f3fbf6;
+      box-shadow: 0 6px 16px rgba(11,122,79,0.06);
+    }
+
+    .radio-btn {
+      position: absolute;
+      left: 12px;
+      top: 18px;
+      transform: scale(1.1);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .option-content {
+      margin-left: 40px;
+    }
+
+    .option-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.15;
+    }
+
+    .title-block { display:flex; flex-direction:column; }
+    .title-block .name { font-weight: 600; }
+    .title-block .price { font-weight:700; margin-top:6px; font-size:14px; color:#222; }
+
+    .offer {
+      color: var(--green);
+      font-weight:700;
+      font-size:13px;
+      text-align:right;
+      min-width:72px;
+    }
+
+    .hidden-content {
+      display: none;
+      margin-top: 14px;
+    }
+    .option.active .hidden-content {
+      display: block;
+    }
+
+    table.select-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      color: #222;
+    }
+    table.select-table thead th {
+      text-align: left;
+      padding: 6px 6px;
+      font-weight: 600;
+      color: #444;
+      font-size: 13px;
+    }
+    table.select-table td {
+      padding: 6px 6px;
+      vertical-align: middle;
+    }
+    table.select-table td:first-child {
+      width: 36px;          
+      color: Black;
+      font-weight:700;
+      text-align: left;
+    }
+    select {
+      padding: 6px 8px;
+      border-radius: 4px;
+      border: 1px solid #c9c9c9;
+      background: #fff;
+      min-width: 120px;
+      font-size: 14px;
+    }
+
+    .bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      gap: 10px;
+      font-size: 14px;
+    }
+    .shipping { color: var(--green); font-weight:700; }
+    .total { color:#111; font-weight:700; }
+
+    .add-wrap {
+      display:flex;
+      justify-content:center;
+      margin-top: 12px;
+    }
+    .add-to-cart {
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-size: 16px;
+      cursor: pointer;
+      min-width: 240px;      
+      box-shadow: 0 6px 10px rgba(11,122,79,0.18);
+    }
+    .add-to-cart:active { transform: translateY(1px); }
+
+    @media (max-width:420px){
+      .header-with-lines::before,.header-with-lines::after{width:55px;}
+      .add-to-cart{min-width:200px}
+    }
+	.price-section {
+	  display: flex;
+	  align-items: center;
+	  gap: 50px;
+	}
+
+	.new-price {
+	  font-weight: 700;
+	  color: #222;
+	  margin-top:6px; 
+	  font-size:14px; 
+	  color:#222;
+	}
+
+	.old-price {
+	  text-decoration: line-through;
+	  color: gray;
+	  font-size: 13px;
+	}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-with-lines">Bundle & Save</div>
+
+    <div class="option" data-price="195">
+      <input class="radio-btn" type="radio" name="bundle" value="195"
+             onchange="selectOption(this)"/>
+      <div class="option-content">
+        <div class="option-header">
+          <div class="title-block">
+            <span class="name">1 Pair</span>
+            <span class="price">DKK 195.00</span>
+          </div>
+          <div class="offer">50% OFF</div>
+        </div>
+
+        <div class="hidden-content">
+          <table class="select-table">
+            <thead>
+              <tr>
+			  <th></th>
+			  <th>Size</th>
+			  <th>Colour</th>
+			  </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#1</td>
+                <td>
+				<select>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				<option>XL</option>
+				</select>
+				</td>
+                <td>
+				<select>\
+				<option>Colour</option>
+				<option>Black</option>
+				<option>White</option>
+				<option>Grey</option>
+				</select>
+				</td>
+              </tr>
+              <tr>
+                <td>#2</td>
+                <td>
+				<select>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				<option>XL</option>
+				</select>
+				</td>
+                <td>
+				<select>
+				<option>Colour</option>
+				<option>Black</option>
+				<option>White</option>
+				<option>Grey</option>
+				</select>
+				</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="option" data-price="345">
+      <input class="radio-btn" type="radio" name="bundle" value="345"
+             onchange="selectOption(this)"/>
+      <div class="option-content">
+        <div class="option-header">
+          <div class="title-block">
+            <span class="name">2 Pair</span>
+            <div class="price-section">
+			<span class="new-price">DKK 345.00</span>
+			<span class="old-price">DKK 195.00</span>
+		    </div>
+          </div>
+          <div class="offer"><span style="font-weight:700;color:var(--green)">Most Popular</span><br>40% OFF</div>
+        </div>
+
+        <div class="hidden-content">
+          <table class="select-table">
+            <thead>
+              <tr>
+			  <th></th>
+			  <th>Size</th>
+			  <th>Colour</th>
+			  </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#1</td>
+                <td>
+				<select>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				</select>
+				</td>
+                <td>
+				<select>
+				<option>Colour</option>
+				<option>Black</option>
+				<option>White</option>
+				</select></td>
+              </tr>
+              <tr>
+                <td>#2</td>
+                <td>
+				<select>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				</select>
+				</td>
+                <td>
+				<select>
+				<option>Colour</option>
+				<option>Black</option>
+				<option>White</option>
+				</select>
+				</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="option" data-price="528">
+      <input class="radio-btn" type="radio" name="bundle" value="528"
+             onchange="selectOption(this)"/>
+      <div class="option-content">
+        <div class="option-header">
+          <div class="title-block">
+            <span class="name">3 Pair</span>
+            <span class="price">DKK 528.00</span>
+          </div>
+          <div class="offer">60% OFF</div>
+        </div>
+
+        <div class="hidden-content">
+          <table class="select-table">
+            <thead>
+              <tr>
+			  <th></th>
+			  <th>Size</th>
+			  <th>Colour</th>
+			  </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#1</td>
+                <td>
+				<select>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				</select>
+				</td>
+                <td>
+				<select>
+				<option>Colour</option>
+				<option>Black</option>
+				<option>White</option>
+				</select>
+				</td>
+              </tr>
+              <tr>
+                <td>#2</td>
+                <td>
+				<select>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				</select>
+				</td>
+                <td>
+				<select>
+				<option>Colour</option>
+				<option>Black</option>
+				<option>White</option>
+				</select>
+				</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-row" style="margin-top:6px;">
+      <div class="shipping">Free 2 Day Shipping</div>
+      <div class="total">Total: <span id="totalPrice">DKK 0.00</span></div>
+    </div>
+
+    <div class="add-wrap">
+      <button class="add-to-cart" id="addBtn">+ Add to Cart</button>
+    </div>
+  </div>
+
+  <script>
+    function selectOption(radio) {
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('active'));
+      const opt = radio.closest('.option');
+      opt.classList.add('active');
+      const price = Number(opt.getAttribute('data-price') || radio.value || 0);
+      document.getElementById('totalPrice').innerText = 'DKK ' + price.toFixed(2);
+    }
+
+    document.getElementById('addBtn').addEventListener('click', () => {
+      const totalText = document.getElementById('totalPrice').innerText;
+      if (totalText === 'DKK 0.00') {
+        alert('Please select a bundle option first.');
+        return;
+      }
+      alert('Added to cart — ' + totalText);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        if (e.target.tagName.toLowerCase() === 'input') return;
+        const radio = opt.querySelector('input[type="radio"]');
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    });
+  </script>
+</body>
+</html>
